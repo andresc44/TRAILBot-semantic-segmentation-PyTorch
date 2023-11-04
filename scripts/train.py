@@ -27,7 +27,7 @@ from core.utils.score import SegmentationMetric
 def parse_args():
     parser = argparse.ArgumentParser(description='Semantic Segmentation Training With Pytorch')
     # model and dataset
-    parser.add_argument('--model', type=str, default='fcn',
+    parser.add_argument('--model', type=str, default='psp',
                         choices=['fcn32s', 'fcn16s', 'fcn8s', 'fcn', 'psp', 'deeplabv3', 
                             'deeplabv3_plus', 'danet', 'denseaspp', 'bisenet', 'encnet', 
                             'dunet', 'icnet', 'enet', 'ocnet', 'psanet', 'cgnet', 'espnet', 
@@ -38,7 +38,7 @@ def parse_args():
                             'densenet121', 'densenet161', 'densenet169', 'densenet201'],
                         help='backbone name (default: vgg16)')
     parser.add_argument('--dataset', type=str, default='pascal_voc',
-                        choices=['pascal_voc', 'pascal_aug', 'ade20k', 'citys', 'sbu'],
+                        choices=['pascal_voc', 'pascal_aug', 'ade20k', 'citys', 'sbu', 'trails'],
                         help='dataset name (default: pascal_voc)')
     parser.add_argument('--base-size', type=int, default=520,
                         help='base image size')
@@ -105,6 +105,7 @@ def parse_args():
             'ade20k': 160,
             'citys': 120,
             'sbu': 160,
+            'trails': 30
         }
         args.epochs = epoches[args.dataset.lower()]
     if args.lr is None:
@@ -116,6 +117,7 @@ def parse_args():
             'ade20k': 0.01,
             'citys': 0.01,
             'sbu': 0.001,
+            'trails': 0.004
         }
         args.lr = lrs[args.dataset.lower()] / 8 * args.batch_size
     return args

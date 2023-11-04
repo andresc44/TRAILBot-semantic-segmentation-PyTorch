@@ -7,6 +7,7 @@ from .ade import ADE20KSegmentation
 from .pascal_voc import VOCSegmentation
 from .pascal_aug import VOCAugSegmentation
 from .sbu_shadow import SBUSegmentation
+from .trails_dataloader import TrailsSegmentation
 
 datasets = {
     'ade20k': ADE20KSegmentation,
@@ -15,6 +16,7 @@ datasets = {
     'coco': COCOSegmentation,
     'citys': CitySegmentation,
     'sbu': SBUSegmentation,
+    'trails': TrailsSegmentation,
 }
 
 
