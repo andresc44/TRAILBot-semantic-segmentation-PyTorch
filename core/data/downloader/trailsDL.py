@@ -11,9 +11,19 @@ import random
 import shutil
 #pip install requests
 
-_TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset') #Directory to store data
-DRIVE_ZIP_NAME = 'AER1515_Course_Project_Complete_Dataset' #"Name of zip file"
-_FILE_ID= "1U5cXlpS7bipVtRu_Ea0g8Bs-FN7WPsA8" #Use Id for zip file on drive, ensure "Anyone with link can access"
+# For New Dataset
+# _TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset') #Directory to store data
+# DRIVE_ZIP_NAME = 'AER1515_Course_Project_Complete_Dataset' #"Name of zip file"
+# _FILE_ID= "1U5cXlpS7bipVtRu_Ea0g8Bs-FN7WPsA8" #Use Id for zip file on drive, ensure "Anyone with link can access"
+# _DESTINATION = 'trail_dataset'
+# _SOURCE_FOLDER = 'Complete_Dataset'
+
+# For Old Dataset
+_TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset_old') #Directory to store data
+DRIVE_ZIP_NAME = 'AER1515_Course_Project_Old_Dataset' #"Name of zip file"
+_FILE_ID= "1qnnCjhvd3JzkUjx_uMVblyFF-uVPEMgQ" #Use Id for zip file on drive, ensure "Anyone with link can access"
+_DESTINATION = 'trail_dataset_old'
+_SOURCE_FOLDER = 'Old_Dataset'
 
 def download_file_from_google_drive(id, destination):
     URL = "https://docs.google.com/uc?export=download&confirm=1"
@@ -55,17 +65,17 @@ def parse_args():
     return args                
 
 def separate_files_to_train_test_val():
-    image_source_folder = os.path.expanduser('~/.torch/datasets/trail_dataset/Complete_Dataset/images')
-    mask_source_folder = os.path.expanduser('~/.torch/datasets/trail_dataset/Complete_Dataset/masks')
+    image_source_folder = _TARGET_DIR + f'/{_SOURCE_FOLDER}/images'
+    mask_source_folder = _TARGET_DIR + f'/{_SOURCE_FOLDER}/masks'
     
-    train_destination_image_folder = os.path.expanduser('../datasets/trail_dataset/Training/Images')
-    train_destination_mask_folder = os.path.expanduser('../datasets/trail_dataset/Training/Masks')
+    train_destination_image_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Training/Images')
+    train_destination_mask_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Training/Masks')
     
-    test_destination_image_folder = os.path.expanduser('../datasets/trail_dataset/Testing/Images')
-    test_destination_mask_folder = os.path.expanduser('../datasets/trail_dataset/Testing/Masks')
+    test_destination_image_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Testing/Images')
+    test_destination_mask_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Testing/Masks')
     
-    val_destination_image_folder =  os.path.expanduser('../datasets/trail_dataset/Validating/Images')
-    val_destination_mask_folder =  os.path.expanduser('../datasets/trail_dataset/Validating/Masks')
+    val_destination_image_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Validating/Images')
+    val_destination_mask_folder = os.path.expanduser(f'../datasets/{_DESTINATION}/Validating/Masks') 
     
     all_files = os.listdir(image_source_folder)
     
@@ -92,11 +102,13 @@ def separate_files_to_train_test_val():
             else:
                 image_destination_file = os.path.join(val_destination_image_folder, file_name)
                 mask_destination_file = os.path.join(val_destination_mask_folder, file_name[:-3] + 'png')
-            shutil.move(image_source_file, image_destination_file)
             shutil.move(mask_source_file, mask_destination_file)
+            shutil.move(image_source_file, image_destination_file)
         except FileNotFoundError:
             print(f"File not found: {mask_source_file}")
-
+            continue
+    
+        
 if __name__ == '__main__':
     args = parse_args()
     if args.download_dir is not None:
