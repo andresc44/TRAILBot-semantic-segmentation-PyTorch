@@ -178,10 +178,14 @@ class Trainer(object):
         if hasattr(self.model, 'exclusive'):
             for module in self.model.exclusive:
                 params_list.append({'params': getattr(self.model, module).parameters(), 'lr': args.lr * 10})
-        self.optimizer = torch.optim.SGD(params_list,
-                                         lr=args.lr,
-                                         momentum=args.momentum,
-                                         weight_decay=args.weight_decay)
+        # self.optimizer = torch.optim.SGD(params_list,
+        #                                  lr=args.lr,
+        #                                  momentum=args.momentum,
+        #                                  weight_decay=args.weight_decay)
+        self.optimizer = torch.optim.Adam(params_list,
+                                          lr=args.lr,
+                                          betas=(args.momentum, 0.999),
+                                          weight_decay=args.weight_decay)
 
         # lr scheduling
         self.lr_scheduler = WarmupPolyLR(self.optimizer,
