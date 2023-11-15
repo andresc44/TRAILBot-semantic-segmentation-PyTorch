@@ -110,5 +110,8 @@ def get_segmentation_model(model, **kwargs):
         'espnet': get_espnet,
         'lednet': get_lednet,
         'dfanet': get_dfanet,
+        'banet' : get_banet,
+        'efficientps': get_efficientps,
+        # Methods: BANet, EfficientPS, DeepLab V3+, (PSPNet, same as was done before)
     }
     return models[model](**kwargs)
