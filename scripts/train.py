@@ -31,12 +31,15 @@ def parse_args():
                         choices=['fcn32s', 'fcn16s', 'fcn8s', 'fcn', 'psp', 'deeplabv3', 
                             'deeplabv3_plus', 'danet', 'denseaspp', 'bisenet', 'encnet', 
                             'dunet', 'icnet', 'enet', 'ocnet', 'psanet', 'cgnet', 'espnet', 
-                            'lednet', 'dfanet','swnet'],
-                        help='model name (default: fcn32s)')
+                            'lednet', 'dfanet','swnet',
+                            'banet', 'efficientps'], #new
+                        help='model name (default: psp)')
     parser.add_argument('--backbone', type=str, default='resnet50',
                         choices=['vgg16', 'resnet18', 'resnet50', 'resnet101', 'resnet152', 
-                            'densenet121', 'densenet161', 'densenet169', 'densenet201'],
-                        help='backbone name (default: vgg16)')
+                            'densenet121', 'densenet161', 'densenet169', 'densenet201',
+                            'resnext-50' #look into, may already be there
+                            'efficientnet', 'inceptionv3', 'deeplab'], #new
+                        help='backbone name (default: resnet50)')
     parser.add_argument('--dataset', type=str, default='pascal_voc',
                         choices=['pascal_voc', 'pascal_aug', 'ade20k', 'citys', 'sbu', 'trails'],
                         help='dataset name (default: pascal_voc)')
