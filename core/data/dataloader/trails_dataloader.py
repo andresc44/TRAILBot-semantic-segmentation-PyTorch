@@ -40,7 +40,7 @@ class TrailsSegmentation(SegmentationDataset):
     """
     NUM_CLASS = 2
 
-    def __init__(self, root='../datasets/trail_dataset', split='train', mode=None, transform=None, **kwargs):
+    def __init__(self, root='../core/data/datasets/trail_dataset', split='train', mode=None, transform=None, **kwargs):
         super(TrailsSegmentation, self).__init__(root, split, mode, transform, **kwargs)
         assert os.path.exists(self.root)
         self.images, self.masks = _get_trails_pairs(self.root, self.split)
@@ -86,7 +86,6 @@ def _get_trails_pairs(folder, split='train'):
         img_paths = []
         mask_paths = []
         for root, _, files in os.walk(img_folder):
-            print(root)
             for filename in files:
                 if filename.endswith('.jpg'):
                     imgpath = os.path.join(root, filename)
@@ -104,10 +103,13 @@ def _get_trails_pairs(folder, split='train'):
         img_folder = os.path.join(folder, 'Training/Images')
         mask_folder = os.path.join(folder, 'Training/Masks')
         img_paths, mask_paths = get_path_pairs(img_folder, mask_folder)
-    else:
-        assert split in ('val', 'test')
+    elif split == 'test':
         img_folder = os.path.join(folder, 'Testing/Images')
         mask_folder = os.path.join(folder, 'Testing/Masks')
+        img_paths, mask_paths = get_path_pairs(img_folder, mask_folder)
+    elif split == 'val':
+        img_folder = os.path.join(folder, 'Validating/Images')
+        mask_folder = os.path.join(folder, 'Validating/Masks')
         img_paths, mask_paths = get_path_pairs(img_folder, mask_folder)
     return img_paths, mask_paths
 

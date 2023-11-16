@@ -8,22 +8,21 @@ import argparse
 import requests
 
 import random
-import shutil
 #pip install requests
 
 # For New Dataset
-# _TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset') #Directory to store data
-# DRIVE_ZIP_NAME = 'AER1515_Course_Project_Complete_Dataset' #"Name of zip file"
-# _FILE_ID= "1U5cXlpS7bipVtRu_Ea0g8Bs-FN7WPsA8" #Use Id for zip file on drive, ensure "Anyone with link can access"
-# _DESTINATION = 'trail_dataset'
-# _SOURCE_FOLDER = 'Complete_Dataset'
+_TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset_new') #Directory to store data
+DRIVE_ZIP_NAME = 'AER1515_Course_Project_Dataset_New' #"Name of zip file"
+_FILE_ID= "1WrmBgQC6W3RHdz-zx6sBR6bbIX5e1vvW" #Use Id for zip file on drive, ensure "Anyone with link can access"
+_DESTINATION = 'trail_dataset_new'
+_SOURCE_FOLDER = 'New_Dataset'
 
 # For Old Dataset
-_TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset_old') #Directory to store data
-DRIVE_ZIP_NAME = 'AER1515_Course_Project_Old_Dataset' #"Name of zip file"
-_FILE_ID= "1qnnCjhvd3JzkUjx_uMVblyFF-uVPEMgQ" #Use Id for zip file on drive, ensure "Anyone with link can access"
-_DESTINATION = 'trail_dataset_old'
-_SOURCE_FOLDER = 'Old_Dataset'
+# _TARGET_DIR = os.path.expanduser('~/.torch/datasets/trail_dataset_old') #Directory to store data
+# DRIVE_ZIP_NAME = 'AER1515_Course_Project_Dataset_Old' #"Name of zip file"
+# _FILE_ID= "1zgS7zENQIy-yr_eH9PRVfF2x-MNhDEN1" #Use Id for zip file on drive, ensure "Anyone with link can access"
+# _DESTINATION = 'trail_dataset_old'
+# _SOURCE_FOLDER = 'Old_Dataset'
 
 def download_file_from_google_drive(id, destination):
     URL = "https://docs.google.com/uc?export=download&confirm=1"

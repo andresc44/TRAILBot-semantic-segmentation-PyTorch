@@ -105,7 +105,7 @@ def parse_args():
             'ade20k': 160,
             'citys': 120,
             'sbu': 160,
-            'trails': 30
+            'trails': 10
         }
         args.epochs = epoches[args.dataset.lower()]
     if args.lr is None:
@@ -215,8 +215,9 @@ class Trainer(object):
 
             images = images.to(self.device)
             targets = targets.to(self.device)
-
+            
             outputs = self.model(images)
+            #print(f'Image Shape: {images.shape}\nOutput Shape: {outputs[0][0].shape}\nTarget Shape: {targets[0].shape}')
             loss_dict = self.criterion(outputs, targets)
 
             losses = sum(loss for loss in loss_dict.values())
@@ -269,8 +270,8 @@ class Trainer(object):
             with torch.no_grad():
                 outputs = model(image)
             self.metric.update(outputs[0], target)
-            pixAcc, mIoU = self.metric.get()
-            logger.info("Sample: {:d}, Validation pixAcc: {:.3f}, mIoU: {:.3f}".format(i + 1, pixAcc, mIoU))
+            pixAcc, mIoU, SQ, RQ, PQ = self.metric.get()
+            logger.info("Sample: {:d}, Validation pixAcc: {:.3f}, mIoU: {:.3f}, SQ: {:.3f}, RQ: {:.3f}, PQ: {:.3f}".format(i + 1, pixAcc, mIoU, SQ, RQ, PQ))
 
         new_pred = (pixAcc + mIoU) / 2
         if new_pred > self.best_pred:
