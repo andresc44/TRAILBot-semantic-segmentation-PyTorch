@@ -28,7 +28,7 @@ class SegmentationMetric(object):
 
         def evaluate_worker(self, pred, label):
             correct, labeled = batch_pix_accuracy(pred, label)
-            inter, union, truth_area = batch_intersection_union(pred, label, self.nclass)
+            inter, union, area_pred, area_lab = batch_intersection_union(pred, label, self.nclass)
 
             self.total_correct += correct
             self.total_label += labeled
@@ -36,18 +36,25 @@ class SegmentationMetric(object):
                 self.total_inter = self.total_inter.to(inter.device)
                 self.total_union = self.total_union.to(union.device)
             self.total_inter += inter
-            self.total_union += union
+            self.total_union += union 
             
-            Temp_IoU = 1.0 * inter / (2.220446049250313e-16 + union)
-            mTemp_IoU = Temp_IoU.mean().item()
-            if mTemp_IoU >= 0.5:
-                self.total_true_positive += 1
-                self.total_true_positive_IoU += inter
-            elif truth_area == 0:
-                self.total_false_negative += 1
-            else:
-                self.total_false_positive += 1
-
+            # if area_lab.mean().item() == 0 and area_pred.mean().item() == 0:
+            #     self.tn += 1
+            # elif area_lab.mean().item() == 0 and area_pred.mean().item() > 0:
+            #     self.fp += 1
+            # elif area_lab.mean().item() > 0 and area_pred.mean().item() == 0:
+            #     self.fn += 1
+            # elif (1.0 * inter / (2.220446049250313e-16 + union)).mean().item() > 0.5:
+            #     # if self.total_inter_tp.device != inter.device:
+            #     #     self.total_inter_tp = self.total_inter_tp.to(inter.device)
+            #     #     self.total_union_tp = self.total_union_tp.to(union.device)
+            #     # self.total_inter_tp += inter
+            #     # self.total_union_tp += union
+            #     self.IoU_tp += (1.0 * inter / (2.220446049250313e-16 + union)).mean().item()
+            #     self.tp += 1
+            # else:
+            #     self.fp += 1
+            
         if isinstance(preds, torch.Tensor):
             evaluate_worker(self, preds, labels)
         elif isinstance(preds, (list, tuple)):
@@ -66,18 +73,18 @@ class SegmentationMetric(object):
         IoU = 1.0 * self.total_inter / (2.220446049250313e-16 + self.total_union)
         mIoU = IoU.mean().item()
         
-        SQ = (self.total_true_positive_IoU / self.total_true_positive).item()
-        RQ = self.total_true_positive / (self.total_true_positive + 0.5 * self.total_false_positive + 0.5 * self.total_false_negative)
-        PQ = SQ * RQ
-        
-        print(SQ)
-        print(SQ.item())
-        print(RQ)
-        print(RQ.item())
-        print(PQ)
-        print(PQ.item())
-        
-        return pixAcc, mIoU, SQ, RQ, PQ
+        # if self.IoU_tp.mean().item() != 0:
+        #     # total_iou_tp = 1.0 * self.total_inter_tp / (2.220446049250313e-16 + self.total_union_tp)
+        #     # total_miou_tp = total_iou_tp.mean().item()
+        #     SQ = self.IoU_tp / self.tp
+        #     RQ = self.tp / (self.tp + 0.5 * (self.fp + self.fn))
+        #     PQ = SQ * RQ
+        # else:
+        #     SQ = 0
+        #     RQ = 0
+        #     PQ = 0
+                
+        return pixAcc, mIoU
 
     def reset(self):
         """Resets the internal evaluation result to initial state."""
@@ -85,11 +92,13 @@ class SegmentationMetric(object):
         self.total_union = torch.zeros(self.nclass)
         self.total_correct = 0
         self.total_label = 0
-        self.total_true_positive = 0
-        self.total_false_negative = 0
-        self.total_false_positive = 0
-        self.counter = 0
-        self.total_true_positive_IoU = 0
+        # self.total_inter_tp = torch.zeros(self.nclass)
+        # self.total_union_tp = torch.zeros(self.nclass)
+        # self.IoU_tp = 0
+        # self.tp = 0
+        # self.fp = 0
+        # self.tn = 0
+        # self.fn = 0
 
 
 # pytorch version
@@ -123,7 +132,7 @@ def batch_intersection_union(output, target, nclass):
     area_union = area_pred + area_lab - area_inter
     assert torch.sum(area_inter > area_union).item() == 0, "Intersection area should be smaller than Union area"
     
-    return area_inter.float(), area_union.float(), area_lab.float()
+    return area_inter.float(), area_union.float(), area_pred.float(), area_lab.float()
 
 
 def pixelAccuracy(imPred, imLab):

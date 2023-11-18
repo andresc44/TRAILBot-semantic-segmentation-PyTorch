@@ -36,7 +36,7 @@ def parse_args():
                         help='backbone name (default: vgg16)')
     parser.add_argument('--dataset', type=str, default='pascal_voc',
                         choices=['pascal_voc', 'pascal_aug', 'ade20k', 'citys', 
-                        'sbu'],
+                        'sbu', 'trails'],
                         help='dataset name (default: pascal_voc)')
     parser.add_argument('--epochs', type=int, default=100, metavar='N',
                         help='number of epochs to train (default: 100)')

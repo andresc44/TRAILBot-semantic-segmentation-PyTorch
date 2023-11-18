@@ -127,16 +127,16 @@ def get_psp(dataset='pascal_voc', backbone='resnet50', pretrained=False, root='~
         'ade20k': 'ade',
         'coco': 'coco',
         'citys': 'citys',
+        'trails': 'trails',
     }
     from ..data.dataloader import datasets
     model = PSPNet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
     if pretrained:
         from .model_store import get_model_file
         device = torch.device(kwargs['local_rank'])
-        model.load_state_dict(torch.load(get_model_file('psp_%s_%s' % (backbone, acronyms[dataset]), root=root),
+        model.load_state_dict(torch.load(get_model_file('psp_%s_%s_best_model' % (backbone, acronyms[dataset]), root=root),
                               map_location=device))
     return model
-
 
 def get_psp_resnet50_voc(**kwargs):
     return get_psp('pascal_voc', 'resnet50', **kwargs)
