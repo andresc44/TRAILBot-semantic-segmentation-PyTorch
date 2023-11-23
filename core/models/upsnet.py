@@ -129,7 +129,7 @@ def get_upsnet(dataset='trails_dataset', backbone='resnet50', pretrained=False, 
         'trailsDL': 'trails_dataloader'
     }
     from ..data.dataloader import datasets
-    model = BANet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
+    model = UPSNet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
     if pretrained:
         from .model_store import get_model_file
         device = torch.device(kwargs['local_rank'])
