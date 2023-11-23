@@ -6,11 +6,10 @@ import torch.nn.functional as F
 from .segbase import SegBaseModel
 from .fcn import _FCNHead
 
-__all__ = ['PSPNet', 'get_psp', 'get_psp_resnet50_voc', 'get_psp_resnet50_ade', 'get_psp_resnet101_voc',
-           'get_psp_resnet101_ade', 'get_psp_resnet101_citys', 'get_psp_resnet101_coco']
+__all__ = ['EfficientPSNet', 'get_efficientps']
 
 
-class PSPNet(SegBaseModel):
+class EfficientPSNet(SegBaseModel):
     r"""Pyramid Scene Parsing Network
 
     Parameters
@@ -101,7 +100,7 @@ class _PSPHead(nn.Module):
         return self.block(x)
 
 
-def get_psp(dataset='pascal_voc', backbone='resnet50', pretrained=False, root='~/.torch/models',
+def get_efficientps(dataset='pascal_voc', backbone='resnet50', pretrained=False, root='~/.torch/models',
             pretrained_base=True, **kwargs):
     r"""Pyramid Scene Parsing Network
 
@@ -127,42 +126,13 @@ def get_psp(dataset='pascal_voc', backbone='resnet50', pretrained=False, root='~
         'ade20k': 'ade',
         'coco': 'coco',
         'citys': 'citys',
+        'trailsDL': 'trails_dataloader'
     }
     from ..data.dataloader import datasets
-    model = PSPNet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
+    model = EfficientPSNet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
     if pretrained:
         from .model_store import get_model_file
         device = torch.device(kwargs['local_rank'])
         model.load_state_dict(torch.load(get_model_file('psp_%s_%s' % (backbone, acronyms[dataset]), root=root),
                               map_location=device))
     return model
-
-
-def get_psp_resnet50_voc(**kwargs):
-    return get_psp('pascal_voc', 'resnet50', **kwargs)
-
-
-def get_psp_resnet50_ade(**kwargs):
-    return get_psp('ade20k', 'resnet50', **kwargs)
-
-
-def get_psp_resnet101_voc(**kwargs):
-    return get_psp('pascal_voc', 'resnet101', **kwargs)
-
-
-def get_psp_resnet101_ade(**kwargs):
-    return get_psp('ade20k', 'resnet101', **kwargs)
-
-
-def get_psp_resnet101_citys(**kwargs):
-    return get_psp('citys', 'resnet101', **kwargs)
-
-
-def get_psp_resnet101_coco(**kwargs):
-    return get_psp('coco', 'resnet101', **kwargs)
-
-
-if __name__ == '__main__':
-    model = get_psp_resnet50_voc()
-    img = torch.randn(4, 3, 480, 480)
-    output = model(img)
