@@ -49,11 +49,12 @@ class Evaluator(object):
                                             aux=args.aux, pretrained=True, pretrained_base=False,
                                             local_rank=args.local_rank,
                                             norm_layer=BatchNorm2d).to(self.device)
+        
         if args.distributed:
             self.model = nn.parallel.DistributedDataParallel(self.model,
                 device_ids=[args.local_rank], output_device=args.local_rank)
         self.model.to(self.device)
-
+        self.model.load_state_dict(torch.load("best_model.pt"))
         self.metric = SegmentationMetric(val_dataset.num_class)
 
     def eval(self):
