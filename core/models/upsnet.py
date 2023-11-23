@@ -100,11 +100,7 @@ class _PSPHead(nn.Module):
         return self.block(x)
 
 
-<<<<<<< HEAD
 def get_upsnet(dataset='trails_dataset', backbone='resnet50', pretrained=False, root='~/.torch/models',
-=======
-def get_banet(dataset='trails_dataset', backbone='resnet50', pretrained=False, root='~/.torch/models',
->>>>>>> 03b15e316cf37e6f6aaa7ece26625b1f20352a7d
             pretrained_base=True, **kwargs):
     r"""Pyramid Scene Parsing Network
 
