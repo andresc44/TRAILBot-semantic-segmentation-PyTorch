@@ -32,7 +32,7 @@ def parse_args():
                             'deeplabv3_plus', 'danet', 'denseaspp', 'bisenet', 'encnet', 
                             'dunet', 'icnet', 'enet', 'ocnet', 'psanet', 'cgnet', 'espnet', 
                             'lednet', 'dfanet','swnet',
-                            'banet', 'efficientps'], #new
+                            'upsnet', 'efficientps', 'new_deeplabv3'], #new
                         help='model name (default: psp)')
     parser.add_argument('--backbone', type=str, default='resnet50',
                         choices=['vgg16', 'resnet18', 'resnet50', 'resnet101', 'resnet152', 

@@ -18,6 +18,10 @@ from .espnet import *
 from .lednet import *
 from .dfanet import *
 
+from .new_deeplabv3_plus import *
+from .upsnet import *
+from .efficientps import *
+
 __all__ = ['get_model', 'get_model_list', 'get_segmentation_model']
 
 _models = {
@@ -113,6 +117,6 @@ def get_segmentation_model(model, **kwargs):
         'upsnet' : get_upsnet,
         'efficientps': get_efficientps,
         'new_deeplabv3': get_new_deeplabv3,
-        # Methods: BANet, EfficientPS, DeepLab V3+, (PSPNet, same as was done before)
+        # Methods: UPSNet, EfficientPS, DeepLab V3+, (PSPNet, same as was done before)
     }
     return models[model](**kwargs)
