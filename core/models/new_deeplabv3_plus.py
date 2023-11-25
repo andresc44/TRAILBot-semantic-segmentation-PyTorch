@@ -7,8 +7,9 @@ __all__ = ['get_new_deeplabv3']
 # Use DeepLabV3+ with EfficientNet as the backbone
 def get_new_deeplabv3(backbone='resnet50', pretrained=True):
     if pretrained:
-        weights = models.DeepLabV3_ResNet50_Weights.DEFAULT
-        model = models.segmentation.deeplabv3_resnet50(weights = weights)
+        # weights = models.DeepLabV3_ResNet50_Weights.DEFAULT
+        model = models.segmentation.deeplabv3_resnet50(weights = 'DEFAULT') 
+        # model = models.segmentation.deeplabv3_resnet50(weights='COCO_WITH_VOC_LABELS_V1')
     else:
         model = models.segmentation.deeplabv3_resnet50()
     # Replace the ResNet backbone with others

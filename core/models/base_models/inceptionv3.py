@@ -1,5 +1,7 @@
 from  torchvision import models
 
+__all__ = ['inceptionv3_backbone']
+
 # inception_v3(*[, weights, progress])
 
 def inceptionv3_backbone(pretrained=True, **kwargs):
