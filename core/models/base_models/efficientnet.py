@@ -1,5 +1,6 @@
 from  torchvision import models
 
+__all__ = ['efficientnet']
 # efficientnet_v2_s(*[, weights, progress])
 # efficientnet_v2_m(*[, weights, progress])
 # efficientnet_v2_l(*[, weights, progress])
