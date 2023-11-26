@@ -37,7 +37,7 @@ def parse_args():
     parser.add_argument('--backbone', type=str, default='resnet50',
                         choices=['vgg16', 'resnet18', 'resnet50', 'resnet101', 'resnet152', 
                             'densenet121', 'densenet161', 'densenet169', 'densenet201',
-                            'resnext-50' #look into, may already be there
+                            'resnext-50', #look into, may already be there
                             'efficientnet', 'inceptionv3', 'deeplab'], #new
                         help='backbone name (default: resnet50)')
     parser.add_argument('--dataset', type=str, default='pascal_voc',
