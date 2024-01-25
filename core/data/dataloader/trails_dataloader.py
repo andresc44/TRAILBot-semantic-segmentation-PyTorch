@@ -6,8 +6,6 @@ import numpy as np
 from PIL import Image
 from .segbase import SegmentationDataset
 
-#!!!!!!!Look into changing base_size and crop_size in last line
-
 class TrailsSegmentation(SegmentationDataset):
     """Trails Semantic Segmentation Dataset.
 
@@ -89,7 +87,7 @@ def _get_trails_pairs(folder, split='train'):
             for filename in files:
                 if filename.endswith('.jpg'):
                     imgpath = os.path.join(root, filename)
-                    maskname = filename.replace('.jpg', '.png') #Are the masks in jpg or png, same name?
+                    maskname = filename.replace('.jpg', '.png')
                     maskpath = os.path.join(mask_folder, maskname)
                     if os.path.isfile(imgpath) and os.path.isfile(maskpath):
                         img_paths.append(imgpath)

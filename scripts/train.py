@@ -56,7 +56,7 @@ def parse_args():
     parser.add_argument('--aux-weight', type=float, default=0.4,
                         help='auxiliary loss weight')
     parser.add_argument('--batch-size', type=int, default=4, metavar='N',
-                        help='input batch size for training (default: 8)')
+                        help='input batch size for training (default: 4)')
     parser.add_argument('--start_epoch', type=int, default=0,
                         metavar='N', help='start epochs (default:0)')
     parser.add_argument('--epochs', type=int, default=50, metavar='N',
