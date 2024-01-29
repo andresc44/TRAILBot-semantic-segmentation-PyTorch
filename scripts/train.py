@@ -320,7 +320,9 @@ if __name__ == '__main__':
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
     args.lr = args.lr * num_gpus
-
+    log_file_name = '{}_{}_{}_log.txt'.format(args.model, args.backbone, args.dataset)
+    full_log_file_name = os.path.expanduser(args.log_dir) + log_file_name
+    os.remove(full_log_file_name) if os.path.exists(full_log_file_name) else None
     logger = setup_logger("semantic_segmentation", args.log_dir, get_rank(), filename='{}_{}_{}_log.txt'.format(
         args.model, args.backbone, args.dataset))
     logger.info("Using {} GPUs".format(num_gpus))
