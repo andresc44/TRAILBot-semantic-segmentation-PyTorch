@@ -1,7 +1,7 @@
 """Prepare Trails dataset"""
 import os
-import zipfile
-import shutil
+# import zipfile
+# import shutil
 import argparse
 import gdown
 
@@ -32,19 +32,4 @@ if __name__ == '__main__':
     print("~/.torch/models directory made/exists")        
     zip_path = _TARGET_DIR + '/'+ _DRIVE_ZIP_NAME +'.pth'
     os.remove(zip_path) if os.path.exists(zip_path) else None
-    save_with_gdown(args.drive_zip_id, zip_path)
-    # try:
-    #     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-    #         zip_ref.extractall(_TARGET_DIR)
-    #     print("Files Unzipped")
-    #     source_dir = _TARGET_DIR + '/' + args.zip_name
-    #     target_dir = _TARGET_DIR
-    #     file_names = os.listdir(source_dir)
-    
-    #     for file_name in file_names:
-    #         shutil.move(os.path.join(source_dir, file_name), target_dir)
-    #     os.rmdir(source_dir)
-    #     os.remove(zip_path)
-        
-    # except zipfile.BadZipFile:
-    #     print('Not a zip file or a corrupted zip file')    
+    save_with_gdown(args.drive_zip_id, zip_path)   

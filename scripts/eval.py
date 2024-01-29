@@ -11,6 +11,8 @@ import torch
 import torch.nn as nn
 import torch.utils.data as data
 import torch.backends.cudnn as cudnn
+import numpy as np
+import shutil
 
 from torchvision import transforms
 from core.data.dataloader import get_segmentation_dataset
@@ -59,6 +61,8 @@ class Evaluator(object):
     def eval(self):
         self.metric.reset()
         self.model.eval()
+        all_pixAcc = np.array([])
+        all_mIoU = np.array([])
         if self.args.distributed:
             model = self.model.module
         else:
@@ -74,6 +78,8 @@ class Evaluator(object):
             pixAcc, mIoU = self.metric.get()
             logger.info("Sample: {:d}, validation pixAcc: {:.3f}, mIoU: {:.3f}".format(
                 i + 1, pixAcc * 100, mIoU * 100))
+            all_pixAcc = np.append(all_pixAcc, pixAcc * 100)
+            all_mIoU = np.append(all_mIoU, mIoU * 100)
 
             if self.args.save_pred:
                 pred = torch.argmax(outputs[0], 1)
@@ -82,6 +88,10 @@ class Evaluator(object):
                 predict = pred.squeeze(0)
                 mask = get_color_pallete(predict, self.args.dataset)
                 mask.save(os.path.join(outdir, os.path.splitext(filename[0])[0] + '.png'))
+        mean_pixAcc = np.mean(all_pixAcc)
+        mean_mIoU = np.mean(all_mIoU)
+        logger.info("Finished evaluating all images. Mean pixAcc: {:.3f}, mean mIoU: {:.3f}".format(
+                mean_pixAcc, mean_mIoU))
         synchronize()
 
 
@@ -100,15 +110,16 @@ if __name__ == '__main__':
         torch.distributed.init_process_group(backend="nccl", init_method="env://")
         synchronize()
 
-    # TODO: optim code
     args.save_pred = True
     if args.save_pred:
-        outdir = '../runs/pred_pic/{}_{}_{}'.format(args.model, args.backbone, args.dataset)
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
-
+        outdir = os.path.expanduser('../runs/pred_pic/{}_{}_{}'.format(args.model, args.backbone, args.dataset))
+        shutil.rmtree(outdir, ignore_errors=True) if os.path.exists(outdir) else None
+        os.makedirs(outdir)
+    log_file_name = '{}_{}_{}_log.txt'.format(args.model, args.backbone, args.dataset)
+    full_log_file_name = os.path.expanduser(args.log_dir) + log_file_name
+    os.remove(full_log_file_name) if os.path.exists(full_log_file_name) else None
     logger = setup_logger("semantic_segmentation", args.log_dir, get_rank(),
-                          filename='{}_{}_{}_log.txt'.format(args.model, args.backbone, args.dataset), mode='a+')
+                          filename=log_file_name, mode='a+')
 
     evaluator = Evaluator(args)
     evaluator.eval()
