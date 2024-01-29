@@ -183,8 +183,8 @@ def get_lednet(dataset='citys', backbone='', pretrained=False, root='~/.torch/mo
         from .model_store import get_model_file
         device = torch.device(kwargs['local_rank'])
         model.load_state_dict(torch.load(get_model_file('lednet_%s' % (acronyms[dataset]), root=root),
-                            #   map_location=device))
-                              map_location=torch.device('cpu')))
+                              map_location=device))
+                            #   map_location=torch.device('cpu')))
     return model
 
 
