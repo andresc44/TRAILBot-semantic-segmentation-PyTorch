@@ -175,6 +175,7 @@ def get_lednet(dataset='citys', backbone='', pretrained=False, root='~/.torch/mo
         'ade20k': 'ade',
         'coco': 'coco',
         'citys': 'citys',
+        'trails': 'resnet50_trails_best_model'
     }
     from ..data.dataloader import datasets
     model = LEDNet(datasets[dataset].NUM_CLASS, backbone=backbone, pretrained_base=pretrained_base, **kwargs)
@@ -182,7 +183,8 @@ def get_lednet(dataset='citys', backbone='', pretrained=False, root='~/.torch/mo
         from .model_store import get_model_file
         device = torch.device(kwargs['local_rank'])
         model.load_state_dict(torch.load(get_model_file('lednet_%s' % (acronyms[dataset]), root=root),
-                              map_location=device))
+                            #   map_location=device))
+                              map_location=torch.device('cpu')))
     return model
 
 

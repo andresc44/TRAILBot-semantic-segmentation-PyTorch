@@ -84,6 +84,7 @@ def separate_files_to_train_test_val(args):
 if __name__ == '__main__':
     args = parse_args()
     try:
+        shutil.rmtree(_TARGET_DIR, ignore_errors=True) if os.path.exists(_TARGET_DIR) else None
         os.makedirs(_TARGET_DIR, exist_ok = False)
         print("Trails dataset directory made")        
         zip_path = _TARGET_DIR + '/trails_temp.zip'
