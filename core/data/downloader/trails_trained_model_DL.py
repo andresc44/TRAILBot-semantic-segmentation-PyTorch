@@ -8,7 +8,7 @@ import gdown
 # For Full Dataset
 _TARGET_DIR = os.path.expanduser('~/.torch/models') #Directory to store data
 _DRIVE_ZIP_NAME = 'lednet_resnet50_trails_best_model' #"Name of zip file"
-_FILE_ID= "1bxfkiC0eIApx4TmUoZjUzCo4Z03H7sG-" #Use Id for zip file on drive, ensure "Anyone with link can access"
+_FILE_ID= "17aTMP9MX2qxENSBtcBUvZvRVqdL2IB_h" #Use Id for zip file on drive, ensure "Anyone with link can access"
 
 def parse_args():
     parser = argparse.ArgumentParser(
